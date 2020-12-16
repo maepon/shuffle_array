@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ShuffleArray</title>
+</head>
+<body>
+
+<p id="result"></p>
+<p><button id="copy">Copy Clipboard</button></p>
+
+<script>
+    // https://www.nxworld.net/js-array-shuffle.html より
+    const shuffle = ([...array]) => {
+        for (let i = array.length - 1; i >= 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function setClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            alert('コピー完了');
+        }, function() {
+            alert('コピー失敗');
+        });
+    }
+
+    const url = new URL(location.href)
+    const listParam = new URLSearchParams(url.search);
+    const listArray = listParam.get('list').split(',')
+    const resultList = shuffle(listArray);
+    const resultString = resultList.join(',');
+
+    document.getElementById('result').textContent = resultString;
+
+    document.getElementById('copy').addEventListener('click',setClipboard.bind(this,resultString))
+
+    console.log(listArray);
+</script>
+</body>
+</html>
